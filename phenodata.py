@@ -19,13 +19,16 @@ class PhenoData:
             'bibtex': bibtex_url,
             'label': label,
             'description': description,
-            'upload': '@'+data_file,
+        }
+
+        files = {
+            'upload': open(data_file, 'rb')
         }
 
         if figure_file != None:
-            payload['figure'] = '@'+figure_file
+            files['figure'] = open(figure_file, 'rb')
 
-        r = requests.post(self.base_url+"/papers?auth_token="+self.auth_token, data=payload, headers=self.headers)
+        r = requests.post(self.base_url+"/papers?auth_token="+self.auth_token, data=payload, files=files, headers=self.headers)
         return r.json()
 
 
